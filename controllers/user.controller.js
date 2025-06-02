@@ -2,6 +2,8 @@ import { compare } from 'bcrypt';
 import userModel from '../models/user.model.js';
 import * as userService from '../services/user.service.js';
 import { validationResult } from 'express-validator';
+import redisClient from '../services/redis.service.js';
+
 
 
 // user controller vaditade user through express validator 
@@ -70,4 +72,22 @@ export const profileController =  async (req, res) => {
     res.status(201).json({
         user: req.user
     })
+}
+
+// controller for logout 
+
+export const logoutController = async (req, res) => {
+    try {
+        const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];
+
+        redisClient.set(token, 'logout', 'EX', 60*60*24);
+
+        res.status(200).json({
+            message: 'Logged out succesfully'
+        });
+        
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err.message)
+    }
 }
