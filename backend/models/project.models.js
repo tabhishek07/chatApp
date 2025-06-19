@@ -8,13 +8,11 @@ const projectSchema = new mongoose.Schema({
         unique: true,
         trim: true,
     },
-
-    users: {
+    users: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
-
-    }
-})
+        ref: 'user'
+    }]
+});
 
 const Project = mongoose.model('project', projectSchema);
 
