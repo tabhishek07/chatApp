@@ -107,6 +107,7 @@ export const getAllUsersController = async (req, res) => {
             email: req.user.email
         })
         const allUsers = await userService.getAllUsers({userId: loggedInUser._id});
+        console.log('allUsers:', allUsers); // check
         return res.status(200).json({
             users: allUsers
         })

@@ -96,18 +96,22 @@ export const addUsersToProject = async(projectId, users, userId) =>{
 }
 
 export const getProjectById = async (projectId) => {
-
-  if(!projectId){
-    throw new Error ('ProjectId is required')
+  if (!projectId) {
+    throw new Error('ProjectId is required');
   }
 
-  if(!mongoose.Types.ObjectId.isValid(projectId)){
-    throw new Error('invalid Project ID');
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    throw new Error('Invalid Project ID');
   }
 
-  const project = await projectModel.findOne({
-    _id: projectId
-  }).populate('users')
+  const project = await projectModel
+    .findById(projectId)
+    .populate({ path: 'users', select: 'email' }) // ✅ ensure only email is fetched
+    .lean(); // ✅ returns plain JS object instead of Mongoose document
+
+  if (!project) {
+    throw new Error('Project not found');
+  }
 
   return project;
-}
+};
