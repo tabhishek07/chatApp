@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import axios from '../config/axios.js'
-import { initializeSocket } from "../config/socket.js";
+import { initializeSocket, receiveMessage, sendMessage } from "../config/socket.js";
 
 const Project = () => {
   const location = useLocation();
@@ -37,7 +37,7 @@ const Project = () => {
 
   useEffect(() => {
 
-    initializeSocket();
+    initializeSocket(project._id);
 
     console.log("hit the useEffect");
 
